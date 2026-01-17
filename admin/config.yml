@@ -1,0 +1,106 @@
+backend:
+  name: git-gateway
+  branch: main
+  repo: conime-id/conime-site
+
+publish_mode: editorial_workflow
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Konfigurasi Slug agar URL artikel rapi (Tahun-Bulan-Tanggal-Judul)
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: "news"
+    label: "News"
+    folder: "src/content/news"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      
+      # --- INFO UTAMA ---
+      - {label: "Layout", name: "layout", widget: "hidden", default: "news"}
+      - {label: "Title (ID)", name: "title_id", widget: "string"}
+      - {label: "Title (EN)", name: "title_en", widget: "string", required: false}
+      
+      # --- SEO & SUMMARY (BILINGUAL) ---
+      - {label: "Excerpt (ID) / SEO ID", name: "excerpt_id", widget: "text", hint: "Ringkasan pendek Bahasa Indonesia untuk SEO."}
+      - {label: "Excerpt (EN) / SEO EN", name: "excerpt_en", widget: "text", required: false, hint: "English summary for SEO."}
+
+      # --- PENULIS & WAKTU ---
+      - {label: "Author", name: "author", widget: "string", default: "CoNime Editorial"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      
+      # --- KATEGORI & TOPIK ---
+      - {label: "Category", name: "category", widget: "select", options: ["Anime", "Film", "Game", "Komik"]}
+      - {label: "Topics", name: "topics", widget: "list", required: false, hint: "Tag topik (contoh: One Piece, Isekai)"}
+
+      # --- MEDIA UTAMA (THUMBNAIL) ---
+      - {label: "Featured Image", name: "thumbnail", widget: "image"}
+      - {label: "Image Title/Alt Text", name: "image_title", widget: "string", required: false, hint: "Judul gambar (muncul saat hover)"}
+      - {label: "Image Credit/Source", name: "image_credit", widget: "string", required: false, hint: "Nama Pemilik Foto (Misal: Netflix)"}
+      - {label: "Image Source URL", name: "image_source_url", widget: "string", required: false, hint: "Link ke sumber foto (Misal: https://netflix.com)"}
+      
+      # --- VIDEO SISIPAN (Hanya Link) ---
+      - {label: "Video Link", name: "video_url", widget: "string", required: false, hint: "Link YouTube/MP4"}
+      - {label: "Video Title", name: "video_title", widget: "string", required: false}
+      - {label: "Video Source Name", name: "video_source", widget: "string", required: false, hint: "Nama Channel/Sumber"}
+      - {label: "Video Source URL", name: "video_source_url", widget: "string", required: false}
+
+      # --- GALERI (FOTO & VIDEO) ---
+      - label: "Gallery"
+        name: "gallery"
+        widget: "list"
+        required: false
+        types:
+          - label: "Photo"
+            name: "photo"
+            widget: "object"
+            fields:
+              - {label: "Image", name: "image", widget: "image"}
+              - {label: "Title/Caption", name: "title", widget: "string"}
+              - {label: "Source Name", name: "source", widget: "string"}
+              - {label: "Source URL", name: "source_url", widget: "string", required: false}
+          - label: "Video"
+            name: "video"
+            widget: "object"
+            fields:
+              - {label: "Video URL", name: "url", widget: "string"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Source Name", name: "source", widget: "string"}
+              - {label: "Source URL", name: "source_url", widget: "string", required: false}
+
+      # --- SUMBER ARTIKEL ---
+      - {label: "Article Source Name", name: "source_name", widget: "string", required: false, hint: "Teks Link (Contoh: Website Resmi One Piece)"}
+      - {label: "Article Source URL", name: "source_url", widget: "string", required: false, hint: "Link Tujuan (Contoh: https://one-piece.com)"}
+
+      # --- ISI ARTIKEL ---
+      # Body ditaruh paling bawah agar enak nulisnya setelah isi metadata
+      - {label: "Body (ID)", name: "body_id", widget: "markdown", hint: "Gunakan toolbar diatas untuk Bold, Quote, Link, dll."}
+      - {label: "Body (EN)", name: "body_en", widget: "markdown", required: false}
+      
+  - name: "opinion"
+    label: "Opinion"
+    folder: "src/content/opinion"
+    create: true
+    fields:
+      - {label: "Title (ID)", name: "title_id", widget: "string"}
+      - {label: "Author", name: "author", widget: "string", default: "CoNime Editorial"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Thumbnail", name: "thumbnail", widget: "image"}
+      - {label: "Body (ID)", name: "body_id", widget: "markdown"}
+
+  - name: "reviews"
+    label: "Reviews"
+    folder: "src/content/reviews"
+    create: true
+    fields:
+      - {label: "Title (ID)", name: "title_id", widget: "string"}
+      - {label: "Author", name: "author", widget: "string", default: "CoNime Editorial"}
+      - {label: "Rating", name: "rating", widget: "hidden"}
+      - {label: "Thumbnail", name: "thumbnail", widget: "image"}
+      - {label: "Body (ID)", name: "body_id", widget: "markdown"}
